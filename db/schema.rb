@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2018_04_17_181211) do
-
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.integer "quantity"
@@ -19,5 +18,4 @@ ActiveRecord::Schema.define(version: 2018_04_17_181211) do
     t.integer "user"
     t.integer "fridge"
   end
-
 end
