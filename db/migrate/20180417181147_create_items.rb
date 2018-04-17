@@ -4,8 +4,8 @@ class CreateItems < ActiveRecord::Migration[5.2]
       t.string :name
       t.integer :quantity
       t.date :expiration_date
-      t.integer :user
-      t.integer :fridge
+      t.integer :user_id
+      t.integer :fridge_id
     end
   end
 end
