@@ -15,6 +15,4 @@ class Item < ActiveRecord::Base
       items = get_all_instances_by_name(name)
       items.map{|i| Fridge.find_by_id(i.fridge_id)}
     end
-
-
  end
