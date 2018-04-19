@@ -1,6 +1,6 @@
 require_relative '../config/environment'
 prompt = TTY::Prompt.new
-font = TTY::Font.new(:starwars)
+font = TTY::Font.new(:doom)
 pastel = Pastel.new
 
 puts "\n"
