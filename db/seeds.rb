@@ -1,12 +1,10 @@
 require_relative "../config/environment.rb"
 require 'pry'
-
-
 # def parse_from_api(link)
 #     all_characters = RestClient.get(link)
 #     character_hash = JSON.parse(all_characters)
 # end
-  
+
 # def get_character_movies_from_api(character)
 #     character_hash = parse_from_api('http://www.swapi.co/api/people/')
 
@@ -18,19 +16,21 @@ require 'pry'
 #     return films_array.compact.flatten
 # end
 
-10.times{User.find_or_create_by(name: Faker::Name.first_name, status: "", pantry: "empty")}
+User.create(name: "Mike Myung", status: "hungry af", pantry: "empty")
+User.create(name: "Gui Zhang", status: "fatty", pantry: "empty")
 
-Fridge.create(name: "flatiron fridge", status: "dirty af")
-Fridge.create(name: "guis apartment fridge", status: "empty af")
-Fridge.create(name: "kimchi fridge", status: "stinky af")
-Fridge.create(name: "mikes family fridge", status: "full af")
-Fridge.create(name: "mini fridge", status: "beery af")
+10.times{User.find_or_create_by(name: Faker::Name.first_name + " " + Faker::Name.last_name, status: "", pantry: "empty")}
 
-100.times{Item.create(name: Faker::Food.ingredient, quantity: rand(1..10), expiration_date: Faker::Date.backward(30), user_id: rand(1..10), fridge_id: rand(1..5))}
+Fridge.create(name: "Flatiron Fridge", status: "dirty af")
+Fridge.create(name: "Gui's Apartment Fridge", status: "empty af")
+Fridge.create(name: "Kimchi Fridge", status: "stinky af")
+Fridge.create(name: "Mike's family Fridge", status: "full af")
+Fridge.create(name: "Mini Fridge", status: "beery af")
+
+100.times{Item.create(name: Faker::Food.ingredient, quantity: rand(1..10), expiration_date: Faker::Date.between(15.days.ago, 30.days.from_now), user_id: rand(1..10), fridge_id: rand(1..5))}
 
 
-# User.create(name: "mike", status: "happy", pantry: "empty") #TODO: figure out how to set default values
-# User.create(name: "gui", status: "mooch", pantry: "empty")
+
 # User.create(name: "ej", status: "happy", pantry: "empty")
 # User.create(name: "paul", status: "happy", pantry: "empty")
 # User.create(name: "gil", status: "happy", pantry: "empty")

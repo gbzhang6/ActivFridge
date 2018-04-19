@@ -1,3 +1,5 @@
+require 'faker'
+
 class Item < ActiveRecord::Base
     belongs_to :users
     belongs_to :fridges
@@ -15,4 +17,9 @@ class Item < ActiveRecord::Base
       items = get_all_instances_by_name(name)
       items.map{|i| Fridge.find_by_id(i.fridge_id)}
     end
+
+    def self.welcome_basket(id)
+      8.times{Item.create(name: Faker::Food.ingredient, quantity: rand(1..10), expiration_date: Faker::Date.forward(30), user_id: id, fridge_id: nil)}
+    end
+
  end
