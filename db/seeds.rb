@@ -16,10 +16,10 @@ require 'pry'
 #     return films_array.compact.flatten
 # end
 
-User.create(name: "Mike Myung", status: "hungry af", pantry: "empty")
-User.create(name: "Gui Zhang", status: "fatty", pantry: "empty")
+User.create(name: "Mike Myung", status: "HUNGRY AF", pantry: "empty")
+User.create(name: "Gui Zhang", status: "FATTY", pantry: "empty")
 
-10.times{User.find_or_create_by(name: Faker::Name.first_name + " " + Faker::Name.last_name, status: "", pantry: "empty")}
+5.times{User.find_or_create_by(name: Faker::Name.first_name + " " + Faker::Name.last_name, status: "HAPPY", pantry: "empty")}
 
 Fridge.create(name: "Flatiron Fridge", status: "dirty af")
 Fridge.create(name: "Gui's Apartment Fridge", status: "empty af")
@@ -27,7 +27,7 @@ Fridge.create(name: "Kimchi Fridge", status: "stinky af")
 Fridge.create(name: "Mike's family Fridge", status: "full af")
 Fridge.create(name: "Mini Fridge", status: "beery af")
 
-100.times{Item.create(name: Faker::Food.ingredient, quantity: rand(1..10), expiration_date: Faker::Date.between(15.days.ago, 30.days.from_now), user_id: rand(1..10), fridge_id: rand(1..5))}
+50.times{Item.create(name: Faker::Food.ingredient, quantity: rand(1..10), expiration_date: Faker::Date.between(15.days.ago, 30.days.from_now), user_id: rand(1..10), fridge_id: rand(1..5))}
 
 
 

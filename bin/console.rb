@@ -33,13 +33,13 @@ class Console < ActiveRecord::Base
       self.welcome
     elsif User.where(name: user_name).exists?
       @logged_user = User.where(name: user_name)[0]
-      puts "Welcome back " + Console.pastel.green("#{user_name}!")
+      puts "Welcome back " + Console.pastel.green("#{user_name}!") + " status: " + Console.pastel.green("#{@logged_user.status}!")
       puts "\n"
     else
       new_user = User.create(name: user_name, status: "", pantry: "empty")
       @logged_user = new_user
       basket = Item.welcome_basket(new_user.id)
-      puts "\n" 
+      puts "\n"
       puts "Welcome to " + Console.pastel.yellow.bold("ActivFridge") + Console.pastel.green(" #{user_name}")
       puts "We've prepared a welcome basket for you!"
       puts "\n"

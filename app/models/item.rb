@@ -34,7 +34,7 @@ class Item < ActiveRecord::Base
     input = Item.input_for_item
     item_arr = Item.where(name: input)
     if item_arr.empty?
-      puts "Sorry, we couldn't find an Item that matches" + Console.pastel.yellow("#{input}") + ". This Item might not be in any Fridge. Please check your input and try again."
+      puts "Sorry, we couldn't find an Item that matches " + Console.pastel.yellow("#{input}") + ". This Item might not be in any Fridge. Please check your input and try again."
     else
       item_arr.map do |item|
         puts "\n"
@@ -60,7 +60,7 @@ class Item < ActiveRecord::Base
 
   def self.move_to_different_fridge(user)
     Item.find_item_to_move_to_different_fridge(user)
-    
+
     puts "\n"
     Console.item_menu
     puts "\n"
@@ -72,7 +72,7 @@ class Item < ActiveRecord::Base
     input = Item.input_for_item
     item_arr = Item.where(name: input)
     if item_arr.empty?
-      puts "Sorry, we couldn't find an Item that matches" + Console.pastel.yellow("#{input}") + ". This Item might not be in any Fridge. Please check your input and try again."
+      puts "Sorry, we couldn't find an Item that matches " + Console.pastel.yellow("#{input}") + ". This Item might not be in any Fridge. Please check your input and try again."
     else
       puts "\n"
       puts "Select the Item you would like to take:"
@@ -99,10 +99,10 @@ class Item < ActiveRecord::Base
       puts "\n"
       puts Console.pastel.bright_red.bold("You have been caught trying to steal food. From now on, the system will recognize you as a MOOCH.")
       puts "\n"
-      user.update_attribute(:name, Console.pastel.bright_red.bold("MOOCH" + " #{user.name.split[1]}"))
-      puts "#{user.name}"
+      user.update_attribute(:status, Console.pastel.bright_red.bold(user.status = "MOOCH"))
+      puts "#{user.name}" + " status: " "#{user.status}"
       puts "\n"
-    else 
+    else
       Fridge.add_to_fridge(user)
     end
   end
