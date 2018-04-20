@@ -17,7 +17,7 @@ class Console < ActiveRecord::Base
 
   def self.title
     puts "\n"
-    puts Console.pastel.bright_white.bold(Console.font.write("ACTIV    FRIDGE"))
+    puts Console.pastel.bright_white.bold(Console.font.write(" ACTIV    FRIDGE "))
     puts "\n"
   end
 
@@ -28,42 +28,65 @@ class Console < ActiveRecord::Base
 
   def self.validate_or_create_user(user_name)
     if !user_name.include?(" ")
-      puts "Invalid user, please enter your first and last name."
+      puts "Invalid user or name. Please enter your first and last name."
+      puts "\n"
       self.welcome
     elsif User.where(name: user_name).exists?
-      @logged_user = User.where(name: user_name)
-      puts "Welcome back #{user_name}! Which fridge would you like to access by number?"
+      @logged_user = User.where(name: user_name)[0]
+      puts "Welcome back " + Console.pastel.green("#{user_name}!")
+      puts "\n"
     else
       new_user = User.create(name: user_name, status: "", pantry: "empty")
       @logged_user = new_user
       basket = Item.welcome_basket(new_user.id)
-      puts "Welcome to ActivFridge #{user_name}! We are providing you with a welcome basket, please enter the number of the fridge would you like put it into?"
-    end
+      puts "\n" 
+      puts "Welcome to " + Console.pastel.yellow.bold("ActivFridge") + Console.pastel.green(" #{user_name}")
+      puts "We've prepared a welcome basket for you!"
+      puts "\n"
+      puts "Please enter the number of the fridge you want to store your item(s) in"
 
-  end
-
-  def self.find_and_display_fridges
-    if @logged_user[0].items[0].fridge_id.nil?
-      puts Fridge.display_all_fridge_with_index
-      self.add_item_to_fridge
-    else
-      puts Fridge.user_fridges_with_index
+      Fridge.add_to_fridge(@logged_user)
+      #Console.select_fridge_and_add
     end
   end
 
-  def self.add_item_to_fridge
-    input = gets.chomp
+  def self.main_menu
+    Console.prompt.select("What would you like to do?") do |menu|
+        menu.choice "Fridge Menu", -> {Console.fridge_menu}
+        menu.choice "Item Menu", -> {Console.item_menu}
+        menu.choice Console.pastel.red("Leave"), -> {puts 'Bye!'}
+    end
   end
 
+  def self.fridge_menu
+    Console.prompt.select("Fridge Menu:") do |menu|
+      menu.choice "Open a Fridge", -> {Fridge.view_all_fridges}
+      menu.choice "See my Items in Fridge", -> {Fridge.see_my_items(@logged_user)}
+      menu.choice "See Users in Fridge", -> {Fridge.see_users_in_fridge}
+      menu.choice "Add a New Fridge", -> {Fridge.create_new_fridge}
+      menu.choice "Clear out a Fridge", -> {Fridge.clear_fridge}
+      menu.choice Console.pastel.yellow("Back to Main Menu"), -> {Console.main_menu}
+    end
+  end
+
+  def self.item_menu
+    Console.prompt.select("Item Menu:") do |menu|
+      menu.choice "View All Items", -> {Item.view_all_items}
+      menu.choice "View Your Items", -> {Item.view_my_items(@logged_user)}
+      menu.choice "Move Item to Another Fridge", -> {Item.move_to_different_fridge(@logged_user)}
+      menu.choice "Find Item", -> {Item.find_item}
+      menu.choice "New Item", -> {Item.new_item(@logged_user)}
+      menu.choice "Delete Item", -> {puts "bye old"}
+      menu.choice Console.pastel.yellow("Back to Main Menu"), -> {Console.main_menu}
+    end
+  end
 end
 
 def run
   console = Console.new
   Console.title
   Console.welcome
-  Console.find_and_display_fridges
-  Console.add_item_to_fridge
-
+  Console.main_menu
 end
 
 run
