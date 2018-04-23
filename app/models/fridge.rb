@@ -52,13 +52,18 @@ class Fridge < ActiveRecord::Base
     fridge = Fridge.set_fridge
     Fridge.all_items_in_a_fridge(fridge)
   end
+
   def self.all_items_in_a_fridge(fridge)
     puts "You have selected " + Console.pastel.yellow("#{fridge.name}")
     puts "\n"
     puts "Items in this fridge:"
     fridge.items.order(:id)
     all_items = fridge.items.map do |item|
-      puts Console.pastel.green("#{User.find(item.user_id).name}") +"'s #{item.name}"
+      if item.user_id.nil?
+        next
+      else
+        puts Console.pastel.green("#{User.find(item.user_id).name}") +"'s #{item.name}"
+      end
     end
 
     puts "\n"
@@ -70,12 +75,15 @@ class Fridge < ActiveRecord::Base
     puts "\n"
     fridge = Fridge.set_fridge
     Fridge.list_people_in_fridge(fridge)
+
+    puts "\n"
+    Console.main_menu
   end
 
   def self.list_people_in_fridge(fridge)
     puts "You have selected " + Console.pastel.yellow("#{fridge.name}") + "\n"
-
-    user_ids = fridge.items.map{|item| item.user_id}.uniq
+    puts "\n"
+    user_ids = fridge.items.map{|item| item.user_id}.uniq.compact
     user_ids.map{|id| puts "#{User.find(id).name}"}
     puts "\n"
     Console.fridge_menu

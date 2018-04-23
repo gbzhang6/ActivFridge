@@ -18,8 +18,9 @@ require 'pry'
 
 User.create(name: "Mike Myung", status: "HUNGRY AF", pantry: "empty")
 User.create(name: "Gui Zhang", status: "FATTY", pantry: "empty")
+Item.create(name: "Shin Ramen", quantity: 12, expiration_date: Faker::Date.between(15.days.ago, 30.days.from_now), user_id: 2, fridge_id: 2)
 
-5.times{User.find_or_create_by(name: Faker::Name.first_name + " " + Faker::Name.last_name, status: "HAPPY", pantry: "empty")}
+10.times{User.find_or_create_by(name: Faker::Name.first_name + " " + Faker::Name.last_name, status: "HAPPY", pantry: "empty")}
 
 Fridge.create(name: "Flatiron Fridge", status: "dirty af")
 Fridge.create(name: "Gui's Apartment Fridge", status: "empty af")

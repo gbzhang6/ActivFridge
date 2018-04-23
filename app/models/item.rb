@@ -6,11 +6,11 @@ class Item < ActiveRecord::Base
 
   def self.input_for_item
     input = Console.prompt.ask("Enter an Item:", default: ENV['USER'])
-    if input.class != String
-      puts "Stop trolling around, bub."
-      Item.input_for_item
-    end
-    input
+    # if input.to_s.class != String
+    #   puts "Stop trolling around, bub."
+    #   Item.input_for_item
+    # end
+    #input
   end
 
   def self.view_all_items
@@ -73,11 +73,23 @@ class Item < ActiveRecord::Base
     item_arr = Item.where(name: input)
     if item_arr.empty?
       puts "Sorry, we couldn't find an Item that matches " + Console.pastel.yellow("#{input}") + ". This Item might not be in any Fridge. Please check your input and try again."
+    elsif user.items.select{|item| item.name == input}.empty?
+      puts "\n"
+      puts Console.pastel.bright_red.bold("You do not own any of this item. You have been caught trying to steal food. From now on, the system will recognize you as a MOOCH.")
+      puts "\n"
+      user.update_attribute(:status, Console.pastel.bright_red.bold(user.status = "MOOCH"))
+      puts Console.pastel.green("#{user.name}") + " status: " "#{user.status}"
+      puts "\n"
+
+      Console.main_menu
     else
       puts "\n"
       puts "Select the Item you would like to take:"
       puts "\n"
       search_results_hash = Item.display_search_results_for_move_to_different_fridge(item_arr)
+      puts "\n"
+      puts "Select the Fridge you want to move this into."
+      puts "\n"
       search_results_hash_key = Item.input_for_item
       item = search_results_hash[search_results_hash_key]
       #might pry this
@@ -100,7 +112,7 @@ class Item < ActiveRecord::Base
       puts Console.pastel.bright_red.bold("You have been caught trying to steal food. From now on, the system will recognize you as a MOOCH.")
       puts "\n"
       user.update_attribute(:status, Console.pastel.bright_red.bold(user.status = "MOOCH"))
-      puts "#{user.name}" + " status: " "#{user.status}"
+      puts Console.pastel.green("#{user.name}") + " status: " "#{user.status}"
       puts "\n"
     else
       Fridge.add_to_fridge(user)

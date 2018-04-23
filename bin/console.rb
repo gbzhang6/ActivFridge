@@ -18,6 +18,7 @@ class Console < ActiveRecord::Base
   def self.title
     puts "\n"
     puts Console.pastel.bright_white.bold(Console.font.write(" ACTIV    FRIDGE "))
+    puts Console.pastel.white("  by MyungZhang")
     puts "\n"
   end
 
@@ -30,7 +31,7 @@ class Console < ActiveRecord::Base
     if !user_name.include?(" ")
       puts "Invalid user or name. Please enter your first and last name."
       puts "\n"
-      self.welcome
+      # self.welcome
     elsif User.where(name: user_name).exists?
       @logged_user = User.where(name: user_name)[0]
       puts "Welcome back " + Console.pastel.green("#{user_name}!") + " status: " + Console.pastel.green("#{@logged_user.status}!")
@@ -48,6 +49,7 @@ class Console < ActiveRecord::Base
       Fridge.add_to_fridge(@logged_user)
       #Console.select_fridge_and_add
     end
+    Console.main_menu
   end
 
   def self.main_menu
@@ -89,6 +91,7 @@ def run
   Console.main_menu
 end
 
+#system("clear")
 run
 
 #puts "Welcome, #{current_user.name}!"
